@@ -1,4 +1,4 @@
-#jsocrud
+#jsocrud [![Build Status](https://travis-ci.org/vertical-knowledge/jsocrud.svg?branch=master)](https://travis-ci.org/vertical-knowledge/jsocrud)
 Perform crud operations within a JavaScript object using a string representation of the path at which you wish perform operations.
 
 Disclaimer: This module wraps eval() with RegExp validation on string paths. Use at your own risk.
