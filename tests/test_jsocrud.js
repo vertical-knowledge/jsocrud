@@ -21,7 +21,6 @@ describe('jsocrud', function() {
         it('should throw an error if given a malformed jsonPath', function(done){
             assert.throws(function() {jsocrud.validatePath('"foo')});
             assert.throws(function() {jsocrud.validatePath('foo[a]')});
-            assert.throws(function() {jsocrud.validatePath('["a"].b["c-d"]')});
             done();
         });
     });

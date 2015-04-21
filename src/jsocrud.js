@@ -1,11 +1,13 @@
-var JSON_PATH_REGEX = /^((\.\w+)|(\[((['"]\w+['"])|(\d+))\]))+$/;
+var JSON_PATH_REGEX = /^((\.\w+)|(\[((['"].*['"])|(\d+))\]))+$/;
+
+function JSOCRUD() {}
 
 /**
  * Attempt to make sure path begins with "[" or "."
  * @param path path Path in an object - Example: ["foo"][2].bar
  * @returns {*}
  */
-function validatePath(path) {
+JSOCRUD.validatePath = function(path) {
     if (typeof path !== 'string') {
         throw new Error('Argument "path" must be a string.')
     }
@@ -21,7 +23,7 @@ function validatePath(path) {
         }
     }
     return path;
-}
+};
 
 /**
  * Attempt to insert the given value in the given object at the given path.
@@ -31,10 +33,10 @@ function validatePath(path) {
  * @param value Value to insert into the object
  * @returns {boolean} Returns true if successful, else false
  */
-function insert(object, path, value) {
-    path = validatePath(path);
+JSOCRUD.insert = function(object, path, value) {
+    path = this.validatePath(path);
     try {
-        var exists = (typeof get(object, path) !== 'undefined');
+        var exists = (typeof this.get(object, path) !== 'undefined');
     }
     catch (e) {
         exists = false;
@@ -42,20 +44,20 @@ function insert(object, path, value) {
     if (exists) {
         throw new Error('An entity already exists at path: ' + path);
     }
-    return set(object, path, value);
-}
+    return this.set(object, path, value);
+};
 
 /**
  * Get the value from an object at the specified path
  * @param {Object} object Object from which data is to be retrieved
  * @param {String} path Path in the object where the desired data exists - Example: ["foo"][2].bar
- * @param {*} defaultReturnValue *Optional* default return value if get() retrieves
+ * @param {*} defaultReturnValue *Optional* default return value if this.get() retrieves
  * undefined or an error occurs. User beware: if undefined is passed as this argument,
  * this function will act as if no default return value was set.
  * @returns {Object|Array|String|Boolean|Number} Value in the object at the specified path
  */
-function get(object, path, defaultReturnValue) {
-    path = validatePath(path);
+JSOCRUD.get = function(object, path, defaultReturnValue) {
+    path = this.validatePath(path);
     try {
         eval('var result=' + JSON.stringify(object) + path);
         if (typeof result === 'undefined') {
@@ -69,7 +71,7 @@ function get(object, path, defaultReturnValue) {
         }
         return defaultReturnValue;
     }
-}
+};
 
 /**
  * Updates a value in an object at the specified path
@@ -77,24 +79,24 @@ function get(object, path, defaultReturnValue) {
  * @param {String} path Path in the object to set the value - Example: ["foo"][2].bar
  * @param {Object|Array|String|Boolean|Number} value Value to set in the object
  */
-function set(object, path, value) {
-    path = validatePath(path);
+JSOCRUD.set = function(object, path, value) {
+    path = this.validatePath(path);
     try {
         eval('object' + path + '=' + JSON.stringify(value) + ';');
         return object;
     }
-    catch(e) {
+    catch (e) {
         throw new Error('There was an error setting the given value at the path: ' + path);
     }
-}
+};
 
 /**
  * Deletes data from an object at the specified path
  * @param {Object} object Object from which data is to be deleted
  * @param {String} path Path in the object to delete - Example: ["foo"][2].bar
  */
-function remove(object, path) {
-    path = validatePath(path);
+JSOCRUD.remove = function(object, path) {
+    path = this.validatePath(path);
     try {
         eval('delete object' + path + ';');
         return object;
@@ -102,13 +104,14 @@ function remove(object, path) {
     catch (e) {
         throw new Error('There was an error deleting from the given object at path: ' + path);
     }
-}
+};
+
 
 // Exports ---------------------------------------------------------------------
 module.exports = {
-    validatePath: validatePath,
-    insert: insert,
-    get: get,
-    set: set,
-    remove: remove
+    validatePath: JSOCRUD.validatePath,
+    insert: JSOCRUD.insert,
+    get: JSOCRUD.get,
+    set: JSOCRUD.set,
+    remove: JSOCRUD.remove
 };
