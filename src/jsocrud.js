@@ -1,5 +1,9 @@
 var JSON_PATH_REGEX = /^((\.\w+)|(\[((['"].*['"])|(\d+))\]))+$/;
 
+/**
+ * JSOCRUD
+ * @constructor
+ */
 function JSOCRUD() {}
 
 /**
