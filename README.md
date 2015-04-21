@@ -64,4 +64,8 @@ npm install
 ```sh
 npm test
 ```
-
+####Generating Wiki Function Documentation
+--------------
+```sh
+npm run-script generate_wiki_documentation
+```
