@@ -12,8 +12,8 @@ function JSOCRUD() {}
  * @returns {*}
  */
 JSOCRUD.validatePath = function(path) {
-    if (typeof path !== 'string') {
-        throw new Error('Argument "path" must be a string.')
+    if (typeof path !== 'string' || !path) {
+        throw new Error('Argument "path" must be a non-empty string.')
     }
     if (path) {
         var firstCharacter = path[0];

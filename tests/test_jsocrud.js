@@ -3,22 +3,21 @@ var jsocrud = require('../src/jsocrud');
 
 describe('jsocrud', function() {
     describe('validatePath', function() {
-        it('should not do anything to an empty jsonPath', function(done){
-            var jsonPath = jsocrud.validatePath('');
-            assert.equal('', jsonPath);
+        it('should throw an error if given an empty path', function(done){
+            assert.throws(function() {jsocrud.validatePath('')});
             done();
         });
-        it('should add a leading "." to jsonPath if necessary', function(done){
-            var jsonPath = jsocrud.validatePath('foo');
-            assert.equal('.foo', jsonPath);
+        it('should add a leading "." to path if necessary', function(done){
+            var path = jsocrud.validatePath('foo');
+            assert.equal('.foo', path);
             done();
         });
-        it('should not add a leading "." to jsonPath if not necessary', function(done){
-            var jsonPath = jsocrud.validatePath('["foo"]');
-            assert.equal('["foo"]', jsonPath);
+        it('should not add a leading "." to path if not necessary', function(done){
+            var path = jsocrud.validatePath('["foo"]');
+            assert.equal('["foo"]', path);
             done();
         });
-        it('should throw an error if given a malformed jsonPath', function(done){
+        it('should throw an error if given a malformed path', function(done){
             assert.throws(function() {jsocrud.validatePath('"foo')});
             assert.throws(function() {jsocrud.validatePath('foo[a]')});
             done();
@@ -67,7 +66,7 @@ describe('jsocrud', function() {
             assert.equal('yup', object.foo.works);
             done();
         });
-        it('should not insert a value if one already exists at the given jsonPath', function(done) {
+        it('should not insert a value if one already exists at the given path', function(done) {
             var object = {'foo': 'bar'};
             var value = 'yolo';
             assert.throws(function() {jsocrud.insert(object, 'foo', value)});
