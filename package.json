@@ -1,7 +1,7 @@
 {
   "name": "jsocrud",
   "version": "1.0.0",
-  "description": "Perform crud operations with a JavaScript object using a string representation of the path at which you wish perform operations.",
+  "description": "Perform crud operations within a JavaScript object using a string representation of the path at which you wish perform operations.",
   "main": "jsocrud.js",
   "repository": {
     "type": "git",

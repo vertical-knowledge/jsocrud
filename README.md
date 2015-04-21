@@ -1,5 +1,5 @@
 #jsocrud
-Perform crud operations with a JavaScript object using a string representation of the path at which you wish perform operations.
+Perform crud operations within a JavaScript object using a string representation of the path at which you wish perform operations.
 
 Disclaimer: This module wraps eval() with RegExp validation on string paths. Use at your own risk.
 
@@ -46,6 +46,8 @@ Error: There was an error setting the given value at the path: .foo[1].baz
 undefined
 > jsocrud.remove(object, 'foo[0].bar');
 { foo: [ {} ] }
+> jsocrud.remove(object, 'foo[1].bar');
+Error: There was an error deleting from the given object at path: .foo[1].bar
 ```
 
 ##Setup for Development
