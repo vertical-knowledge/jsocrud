@@ -10,11 +10,16 @@
   "keywords": [
   ],
   "author": "Kyle Amos",
-  "license": "",
+  "licenses": [
+    {
+      "type": "GPLv2",
+      "url": "https://github.com/vertical-knowledge/jsocrud/blob/master/LICENSE.md"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/vertical-knowledge/jsocrud/issues"
   },
-  "homepage": "https://github.com/jsocrud/iv2pii",
+  "homepage": "https://github.com/vertical-knowledge/jsocrud",
   "dependencies": {
   },
   "devDependencies": {
