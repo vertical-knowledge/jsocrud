@@ -30,8 +30,8 @@ jsocrud.validatePath = function(path) {
 };
 
 /**
- * Attempt to insert the given value in the given object at the given path.
- * If trying insert a value multiple layers down, the previous layers must already exist.
+ * Attempt to insert the given value into the given object at the given path.
+ * If attempting insert a deep value, all layers to that path must already exist in the object.
  * @param {Object} object Object in which to insert the value
  * @param {String} path Path in the object to set the value - Example: ["foo"][2].bar
  * @param {Object|Array|String|Boolean|Number} value Value to insert into the object
@@ -52,7 +52,7 @@ jsocrud.insert = function(object, path, value) {
 };
 
 /**
- * Get the value from an object at the specified path
+ * Get the value from the given object at the given path
  * @param {Object} object Object from which data is to be retrieved
  * @param {String} path Path in the object where the desired data exists - Example: ["foo"][2].bar
  * @param {Object|Array|String|Boolean|Number} defaultReturnValue *Optional* default return value if this.get() retrieves
@@ -78,7 +78,7 @@ jsocrud.get = function(object, path, defaultReturnValue) {
 };
 
 /**
- * Updates a value in an object at the specified path
+ * Sets the given value in the given object at the given path
  * @param {Object} object Object in which value will be set
  * @param {String} path Path in the object to set the value - Example: ["foo"][2].bar
  * @param {Object|Array|String|Boolean|Number} value Value to set in the object
