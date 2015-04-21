@@ -1,0 +1,29 @@
+{
+  "name": "jsocrud",
+  "version": "1.0.0",
+  "description": "Perform crud operations with a JavaScript object using a string representation of the path at which you wish perform operations.",
+  "main": "jsocrud.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vertical-knowledge/jsocrud.git"
+  },
+  "keywords": [
+  ],
+  "author": "Kyle Amos",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/vertical-knowledge/jsocrud/issues"
+  },
+  "homepage": "https://github.com/jsocrud/iv2pii",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "",
+    "jsdoc-githubify": "",
+    "wicked": ""
+  },
+  "scripts": {
+    "test": "mocha ./tests",
+    "generate_wiki_documentation": "wicked -toc ./src"
+  }
+}
