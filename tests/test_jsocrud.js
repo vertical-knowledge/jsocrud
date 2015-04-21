@@ -1,5 +1,5 @@
 var assert = require('assert');
-var jsocrud = require('../src/jsocrud');
+var jsocrud = require('..//jsocrud');
 
 describe('jsocrud', function() {
     describe('validatePath', function() {
