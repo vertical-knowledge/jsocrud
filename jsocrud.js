@@ -1,17 +1,17 @@
 var JSON_PATH_REGEX = /^((\.\w+)|(\[((['"].*['"])|(\d+))\]))+$/;
 
 /**
- * JSOCRUD
+ * jsocrud module
  * @constructor
  */
-function JSOCRUD() {}
+function jsocrud() {}
 
 /**
  * Attempt to make sure path begins with "[" or "."
  * @param path path Path in an object - Example: ["foo"][2].bar
- * @returns {*}
+ * @returns {String} Validated path string
  */
-JSOCRUD.validatePath = function(path) {
+jsocrud.validatePath = function(path) {
     if (typeof path !== 'string' || !path) {
         throw new Error('Argument "path" must be a non-empty string.')
     }
@@ -32,12 +32,12 @@ JSOCRUD.validatePath = function(path) {
 /**
  * Attempt to insert the given value in the given object at the given path.
  * If trying insert a value multiple layers down, the previous layers must already exist.
- * @param object Object in which to insert the value
- * @param path Path in the object to set the value - Example: ["foo"][2].bar
- * @param value Value to insert into the object
- * @returns {boolean} Returns true if successful, else false
+ * @param {Object} object Object in which to insert the value
+ * @param {String} path Path in the object to set the value - Example: ["foo"][2].bar
+ * @param {Object|Array|String|Boolean|Number} value Value to insert into the object
+ * @returns {Object} Object after insertion
  */
-JSOCRUD.insert = function(object, path, value) {
+jsocrud.insert = function(object, path, value) {
     path = this.validatePath(path);
     try {
         var exists = (typeof this.get(object, path) !== 'undefined');
@@ -55,12 +55,12 @@ JSOCRUD.insert = function(object, path, value) {
  * Get the value from an object at the specified path
  * @param {Object} object Object from which data is to be retrieved
  * @param {String} path Path in the object where the desired data exists - Example: ["foo"][2].bar
- * @param {*} defaultReturnValue *Optional* default return value if this.get() retrieves
+ * @param {Object|Array|String|Boolean|Number} defaultReturnValue *Optional* default return value if this.get() retrieves
  * undefined or an error occurs. User beware: if undefined is passed as this argument,
  * this function will act as if no default return value was set.
  * @returns {Object|Array|String|Boolean|Number} Value in the object at the specified path
  */
-JSOCRUD.get = function(object, path, defaultReturnValue) {
+jsocrud.get = function(object, path, defaultReturnValue) {
     path = this.validatePath(path);
     try {
         eval('var result=' + JSON.stringify(object) + path);
@@ -82,8 +82,9 @@ JSOCRUD.get = function(object, path, defaultReturnValue) {
  * @param {Object} object Object in which value will be set
  * @param {String} path Path in the object to set the value - Example: ["foo"][2].bar
  * @param {Object|Array|String|Boolean|Number} value Value to set in the object
+ * @returns {Object} Object after setting value
  */
-JSOCRUD.set = function(object, path, value) {
+jsocrud.set = function(object, path, value) {
     path = this.validatePath(path);
     try {
         eval('object' + path + '=' + JSON.stringify(value) + ';');
@@ -98,8 +99,9 @@ JSOCRUD.set = function(object, path, value) {
  * Deletes data from an object at the specified path
  * @param {Object} object Object from which data is to be deleted
  * @param {String} path Path in the object to delete - Example: ["foo"][2].bar
+ * @returns {Object} Object after removal
  */
-JSOCRUD.remove = function(object, path) {
+jsocrud.remove = function(object, path) {
     path = this.validatePath(path);
     try {
         eval('delete object' + path + ';');
@@ -113,9 +115,9 @@ JSOCRUD.remove = function(object, path) {
 
 // Exports ---------------------------------------------------------------------
 module.exports = {
-    validatePath: JSOCRUD.validatePath,
-    insert: JSOCRUD.insert,
-    get: JSOCRUD.get,
-    set: JSOCRUD.set,
-    remove: JSOCRUD.remove
+    validatePath: jsocrud.validatePath,
+    insert: jsocrud.insert,
+    get: jsocrud.get,
+    set: jsocrud.set,
+    remove: jsocrud.remove
 };
