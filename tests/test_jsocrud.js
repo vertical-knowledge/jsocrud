@@ -3,23 +3,55 @@ var jsocrud = require('..//jsocrud');
 
 describe('jsocrud', function() {
     describe('validatePath', function() {
-        it('should throw an error if given an empty path', function(done){
+        it('should throw an error if given an empty path', function(done) {
             assert.throws(function() {jsocrud.validatePath('')});
             done();
         });
-        it('should add a leading "." to path if necessary', function(done){
+        it('should add a leading "." to path if necessary', function(done) {
             var path = jsocrud.validatePath('foo');
             assert.equal('.foo', path);
             done();
         });
-        it('should not add a leading "." to path if not necessary', function(done){
+        it('should not add a leading "." to path if not necessary', function(done) {
             var path = jsocrud.validatePath('["foo"]');
             assert.equal('["foo"]', path);
             done();
         });
-        it('should throw an error if given a malformed path', function(done){
+        it('should throw an error if given a malformed path', function(done) {
             assert.throws(function() {jsocrud.validatePath('"foo')});
             assert.throws(function() {jsocrud.validatePath('foo[a]')});
+            done();
+        });
+        it('should only allow word characters following a dot', function(done) {
+            assert.equal('.foo', jsocrud.validatePath('foo'));
+            assert.throws(function() {
+                jsocrud.validatePath('.foo;');
+            });
+            done();
+        });
+        it('should allow any characters (except unescaped respective double or single quotes) in quote notation', function(done) {
+            var path = '["foo-bar;baz+15"]';
+            assert.equal(path, jsocrud.validatePath(path));
+            path = "['foo-bar;baz+15']";
+            assert.equal(path, jsocrud.validatePath(path));
+            done();
+        });
+        it('should only allow number characters in index notation', function(done) {
+            var path = '[1][2][3]';
+            assert.equal(path, jsocrud.validatePath(path));
+            assert.throws(function() {
+                jsocrud.validatePath('[abc123]');
+            });
+            done();
+        });
+        it('should not allow malicious paths', function(done) {
+            assert.throws(function() {
+                jsocrud.validatePath('["foo"]=2;console.log("hi");a={};a["foo"]');
+            });
+
+            assert.throws(function() {
+                jsocrud.validatePath("['foo']=2;console.log('hi');a={};a['foo']");
+            });
             done();
         });
     });
