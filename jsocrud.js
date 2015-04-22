@@ -8,7 +8,7 @@ function jsocrud() {}
 
 /**
  * Validates the given path. Adds a leading "." if necessary.
- * @param path path Path in an object - Example: ["foo"][2].bar
+ * @param {String} path Path in an object - Example: ["foo"][2].bar
  * @returns {String} Validated path string
  */
 jsocrud.validatePath = function(path) {
