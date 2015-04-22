@@ -1,4 +1,4 @@
-#jsocrud [![Build Status](https://travis-ci.org/vertical-knowledge/jsocrud.svg?branch=master)](https://travis-ci.org/vertical-knowledge/jsocrud)
+# jsocrud [![Build Status](https://travis-ci.org/vertical-knowledge/jsocrud.svg?branch=master)](https://travis-ci.org/vertical-knowledge/jsocrud)
 Perform crud operations within a JavaScript object using a string representation of the path at which you wish perform operations.
 
 **This module wraps eval(). While there is regex validation in place
@@ -7,7 +7,7 @@ passing untrusted strings as path arguments to the functions in this module is n
 
 View the [wiki](https://github.com/vertical-knowledge/jsocrud/wiki/JSOCRUD.API) for function documentation.
 
-#Usage
+#### Usage
 --------------
 Here is an example of how you would use this module interact with a JavaScript Object:
 ```js
@@ -55,10 +55,10 @@ Error: There was an error deleting from the given object at path: .foo[1].bar
 
 
 
-#Setup for Development
+## Setup for Development
 --------------
 
-#Installing
+#### Installing
 --------------
 ```sh
 git clone git@github.com:vertical-knowledge/jsocrud.git
@@ -66,7 +66,7 @@ cd jsocrud
 npm install
 ```
 
-#Running Tests
+#### Running Tests
 --------------
 ```sh
 npm test
