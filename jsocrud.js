@@ -7,7 +7,7 @@ var JSON_PATH_REGEX = /^((\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[
 function jsocrud() {}
 
 /**
- * Attempt to make sure path begins with "[" or "."
+ * Validates the given path. Adds a leading "." if necessary.
  * @param path path Path in an object - Example: ["foo"][2].bar
  * @returns {String} Validated path string
  */
@@ -30,7 +30,7 @@ jsocrud.validatePath = function(path) {
 };
 
 /**
- * Attempt to insert the given value into the given object at the given path.
+ * Attempts to insert the given value into the given object at the given path.
  * If attempting insert a deep value, all layers to that path must already exist in the object.
  * @param {Object} object Object in which to insert the value
  * @param {String} path Path in the object to set the value - Example: ["foo"][2].bar
@@ -52,7 +52,7 @@ jsocrud.insert = function(object, path, value) {
 };
 
 /**
- * Get the value from the given object at the given path
+ * Gets the value from the given object at the given path
  * @param {Object} object Object from which data is to be retrieved
  * @param {String} path Path in the object where the desired data exists - Example: ["foo"][2].bar
  * @param {Object|Array|String|Boolean|Number} defaultReturnValue *Optional* default return value if this.get() retrieves
