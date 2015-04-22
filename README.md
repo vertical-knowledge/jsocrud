@@ -3,7 +3,7 @@ Perform crud operations within a JavaScript object using a string representation
 
 Disclaimer: This module wraps eval() with RegExp validation on string paths. Use at your own risk.
 
-View the [wiki](https://github.com/vertical-knowledge/jsocrud/wiki) for function documentation.
+View the [wiki](https://github.com/vertical-knowledge/jsocrud/wiki/JSOCRUD.API) for function documentation.
 
 ####Usage
 --------------
