@@ -1,9 +1,9 @@
 #jsocrud [![Build Status](https://travis-ci.org/vertical-knowledge/jsocrud.svg?branch=master)](https://travis-ci.org/vertical-knowledge/jsocrud)
 Perform crud operations within a JavaScript object using a string representation of the path at which you wish perform operations.
 
-Warning: This module wraps eval(). While there is regex validation in place
-on paths and a few thought-through test cases in the unit tests, *PASSING UNTRUSTED
-INPUTS AS PATHS TO THE FUNCTIONS IN THIS MODULE IS NOT RECOMMENDED*.
+**This module wraps eval(). While there is regex validation in place
+on paths and a few thought-through potential cases explicitly prevented and tested,
+passing untrusted strings as path arguments to the functions in this method is not recommended.**
 
 View the [wiki](https://github.com/vertical-knowledge/jsocrud/wiki/JSOCRUD.API) for function documentation.
 
