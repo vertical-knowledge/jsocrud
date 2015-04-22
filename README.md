@@ -7,7 +7,7 @@ passing untrusted strings as path arguments to the functions in this module is n
 
 View the [wiki](https://github.com/vertical-knowledge/jsocrud/wiki/JSOCRUD.API) for function documentation.
 
-####Usage
+#Usage
 --------------
 Here is an example of how you would use this module interact with a JavaScript Object:
 ```js
@@ -52,10 +52,13 @@ undefined
 Error: There was an error deleting from the given object at path: .foo[1].bar
 ```
 
-##Setup for Development
+
+
+
+#Setup for Development
 --------------
 
-####Installing
+#Installing
 --------------
 ```sh
 git clone git@github.com:vertical-knowledge/jsocrud.git
@@ -63,9 +66,8 @@ cd jsocrud
 npm install
 ```
 
-####Running Tests
+#Running Tests
 --------------
 ```sh
 npm test
 ```
-
