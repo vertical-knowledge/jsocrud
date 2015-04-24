@@ -125,6 +125,13 @@ jsocrud.remove = function(object, path) {
     }
 };
 
+/**
+ * *This function is not included in exports*
+ * Split a validated path into components
+ * @param {String} validatedPath Validated path - Example: ["foo"][2].bar
+ * @returns {Array} Path components
+ * @private
+ */
 function _splitPath(validatedPath) {
     var pathSplitRegex = /(\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\])/g;
     var splitPath = [];
@@ -146,7 +153,7 @@ function _splitPath(validatedPath) {
         splitPath.push(match);
     }
     return splitPath;
-};
+}
 
 // Exports ---------------------------------------------------------------------
 module.exports = {
