@@ -59,12 +59,12 @@ jsocrud.insert = function(object, path, value) {
  * @returns {Object|Array|String|Boolean|Number} Value in the object at the specified path
  */
 jsocrud.get = function(object, path, defaultReturnValue) {
-    var splitPath = _splitPath(this.validatePath(path));
+    var parsedPath = _parsePath(this.validatePath(path));
     try {
         var i;
         var currentObject = object;
-        for (i=0; i < splitPath.length; ++i) {
-            currentObject = currentObject[splitPath[i]];
+        for (i=0; i < parsedPath.length; ++i) {
+            currentObject = currentObject[parsedPath[i]];
         }
         if (typeof currentObject === 'undefined') {
             throw new Error('Not found');
@@ -87,14 +87,14 @@ jsocrud.get = function(object, path, defaultReturnValue) {
  * @returns {Object} Object after setting value
  */
 jsocrud.set = function(object, path, value) {
-    var splitPath = _splitPath(this.validatePath(path));
+    var parsedPath = _parsePath(this.validatePath(path));
     try {
         var i;
         var currentObject = object;
-        for (i=0; i < splitPath.length-1; ++i) {
-            currentObject = currentObject[splitPath[i]];
+        for (i=0; i < parsedPath.length-1; ++i) {
+            currentObject = currentObject[parsedPath[i]];
         }
-        currentObject[splitPath[i]] = value;
+        currentObject[parsedPath[i]] = value;
         return object;
     }
     catch (e) {
@@ -109,14 +109,14 @@ jsocrud.set = function(object, path, value) {
  * @returns {Object} Object after removal
  */
 jsocrud.remove = function(object, path) {
-    var splitPath = _splitPath(this.validatePath(path));
+    var parsedPath = _parsePath(this.validatePath(path));
     try {
         var i;
         var currentObject = object;
-        for (i=0; i < splitPath.length-1; ++i) {
-            currentObject = currentObject[splitPath[i]];
+        for (i=0; i < parsedPath.length-1; ++i) {
+            currentObject = currentObject[parsedPath[i]];
         }
-        delete currentObject[splitPath[i]];
+        delete currentObject[parsedPath[i]];
         return object;
     }
     catch (e) {
@@ -126,14 +126,14 @@ jsocrud.remove = function(object, path) {
 
 /**
  * *This function is not included in exports*
- * Split a validated path into components
+ * Parse a validated path into components
  * @param {String} validatedPath Validated path - Example: ["foo"][2].bar
  * @returns {Array} Path components
  * @private
  */
-function _splitPath(validatedPath) {
+function _parsePath(validatedPath) {
     var pathSplitRegex = /(\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\])/g;
-    var splitPath = [];
+    var parsedPath = [];
     var match;
     while (match = pathSplitRegex.exec(validatedPath)) {
         match = match[0];
@@ -149,9 +149,9 @@ function _splitPath(validatedPath) {
         else {
             throw new Error('Malformed path match: "' + match + '".')
         }
-        splitPath.push(match);
+        parsedPath.push(match);
     }
-    return splitPath;
+    return parsedPath;
 }
 
 // Exports ---------------------------------------------------------------------
