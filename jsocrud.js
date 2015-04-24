@@ -66,11 +66,10 @@ jsocrud.get = function(object, path, defaultReturnValue) {
         for (i=0; i < splitPath.length; ++i) {
             currentObject = currentObject[splitPath[i]];
         }
-        var result = currentObject;
-        if (typeof result === 'undefined') {
+        if (typeof currentObject === 'undefined') {
             throw new Error('Not found');
         }
-        return result;
+        return currentObject;
     }
     catch (e) {
         if (typeof defaultReturnValue === 'undefined') {
