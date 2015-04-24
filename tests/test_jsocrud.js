@@ -204,12 +204,39 @@ describe('jsocrud', function() {
         });
     });
     describe('remove', function() {
-       it('should delete from an object at the specified json path', function(done) {
-           var object = {'foo': 'bar'};
-           jsocrud.remove(object, '["foo"]');
-           assert.equal('undefined', typeof object.foo);
-           done();
-       });
+        it('should delete from an object at the specified json path', function(done) {
+            var object = {'foo': 'bar'};
+            jsocrud.remove(object, '["foo"]');
+            assert.equal('undefined', typeof object.foo);
+            done();
+        });
+        it('should delete deep values without affecting other values in an object', function(done) {
+            var object = {
+                'foo': 'bar',
+                'bar': {
+                    'baz': [
+                        0,
+                        1,
+                        2,
+                        'zoo',
+                        {
+                            foo: 'foo',
+                            bar: 'bar'
+                        }
+                    ]
+                }
+            };
+            jsocrud.remove(object, '.bar.baz[4]["bar"]');
+            jsocrud.remove(object, '.bar.baz[3]');
+            assert.equal('bar', object.foo);
+            assert.equal(0, object.bar.baz[0]);
+            assert.equal(1, object.bar.baz[1]);
+            assert.equal(2, object.bar.baz[2]);
+            assert.equal(undefined, object.bar.baz[3]);
+            assert.equal('foo', object.bar.baz[4].foo);
+            assert.equal(undefined, object.bar.baz[4].bar);
+            done();
+        });
         it('should work with dot notation', function(done) {
             var object = {'foo': 'bar'};
             jsocrud.remove(object, 'foo');
@@ -218,7 +245,7 @@ describe('jsocrud', function() {
             jsocrud.remove(object, '.foo');
             assert.equal('undefined', typeof object.foo);
             done();
-       });
+        });
         it('should throw an error if deleting a deep value which does not exist', function(done) {
             assert.throws(function() {jsocrud.delete({}, 'foo.bar.baz[1]')});
             done();

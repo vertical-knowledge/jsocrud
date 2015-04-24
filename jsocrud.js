@@ -1,4 +1,4 @@
-var JSON_PATH_REGEX = /^((\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\]))+$/;
+var PATH_VALIDATION_REGEX = /^((\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\]))+$/;
 
 /**
  * jsocrud module
@@ -15,16 +15,14 @@ jsocrud.validatePath = function(path) {
     if (typeof path !== 'string' || !path) {
         throw new Error('Argument "path" must be a non-empty string.')
     }
-    if (path) {
-        var firstCharacter = path[0];
-        if (firstCharacter !== '[' && firstCharacter !== '.') {
-            if (firstCharacter !== '\'' && firstCharacter !== '"') {
-                path = '.' + path;
-            }
+    var firstCharacter = path[0];
+    if (firstCharacter !== '[' && firstCharacter !== '.') {
+        if (firstCharacter !== '\'' && firstCharacter !== '"') {
+            path = '.' + path;
         }
-        if (!JSON_PATH_REGEX.test(path)) {
-            throw new Error(path + ' is not a valid path');
-        }
+    }
+    if (!PATH_VALIDATION_REGEX.test(path)) {
+        throw new Error(path + ' is not a valid path');
     }
     return path;
 };
@@ -61,9 +59,14 @@ jsocrud.insert = function(object, path, value) {
  * @returns {Object|Array|String|Boolean|Number} Value in the object at the specified path
  */
 jsocrud.get = function(object, path, defaultReturnValue) {
-    path = this.validatePath(path);
+    var splitPath = _splitPath(this.validatePath(path));
     try {
-        eval('var result=' + JSON.stringify(object) + path);
+        var i;
+        var currentObject = object;
+        for (i=0; i < splitPath.length; ++i) {
+            currentObject = currentObject[splitPath[i]];
+        }
+        var result = currentObject;
         if (typeof result === 'undefined') {
             throw new Error('Not found');
         }
@@ -85,9 +88,14 @@ jsocrud.get = function(object, path, defaultReturnValue) {
  * @returns {Object} Object after setting value
  */
 jsocrud.set = function(object, path, value) {
-    path = this.validatePath(path);
+    var splitPath = _splitPath(this.validatePath(path));
     try {
-        eval('object' + path + '=' + JSON.stringify(value) + ';');
+        var i;
+        var currentObject = object;
+        for (i=0; i < splitPath.length-1; ++i) {
+            currentObject = currentObject[splitPath[i]];
+        }
+        currentObject[splitPath[i]] = value;
         return object;
     }
     catch (e) {
@@ -102,9 +110,14 @@ jsocrud.set = function(object, path, value) {
  * @returns {Object} Object after removal
  */
 jsocrud.remove = function(object, path) {
-    path = this.validatePath(path);
+    var splitPath = _splitPath(this.validatePath(path));
     try {
-        eval('delete object' + path + ';');
+        var i;
+        var currentObject = object;
+        for (i=0; i < splitPath.length-1; ++i) {
+            currentObject = currentObject[splitPath[i]];
+        }
+        delete currentObject[splitPath[i]];
         return object;
     }
     catch (e) {
@@ -112,6 +125,28 @@ jsocrud.remove = function(object, path) {
     }
 };
 
+function _splitPath(validatedPath) {
+    var pathSplitRegex = /(\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\])/g;
+    var splitPath = [];
+    var match;
+    while (match = pathSplitRegex.exec(validatedPath)) {
+        match = match[0];
+        if (match.indexOf('.') === 0) {
+            match = match.substring(1, match.length);
+        }
+        else if (match.indexOf('["') === 0 || match.indexOf('[\'') === 0) {
+            match = match.substring(2, match.length - 2);
+        }
+        else if (match.indexOf('[') === 0) {
+            match = parseInt(match.substring(1, match.length - 1));
+        }
+        else {
+            throw new Error('Malformed path match: "' + match + '".')
+        }
+        splitPath.push(match);
+    }
+    return splitPath;
+};
 
 // Exports ---------------------------------------------------------------------
 module.exports = {
