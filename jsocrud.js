@@ -28,6 +28,34 @@ jsocrud.validatePath = function(path) {
 };
 
 /**
+ * Parse a validated path into components
+ * @param {String} validatedPath Validated path - Example: ["foo"][2].bar
+ * @returns {Array} Path components
+ */
+jsocrud.parsePath = function(validatedPath) {
+    var pathSplitRegex = /(\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\])/g;
+    var parsedPath = [];
+    var match;
+    while (match = pathSplitRegex.exec(validatedPath)) {
+        match = match[0];
+        if (match.indexOf('.') === 0) {
+            match = match.substring(1, match.length);
+        }
+        else if (match.indexOf('["') === 0 || match.indexOf('[\'') === 0) {
+            match = match.substring(2, match.length - 2);
+        }
+        else if (match.indexOf('[') === 0) {
+            match = parseInt(match.substring(1, match.length - 1));
+        }
+        else {
+            throw new Error('Malformed path match: "' + match + '".')
+        }
+        parsedPath.push(match);
+    }
+    return parsedPath;
+};
+
+/**
  * Attempts to insert the given value into the given object at the given path.
  * If attempting insert a deep value, all layers to that path must already exist in the object.
  * @param {Object} object Object in which to insert the value
@@ -59,7 +87,7 @@ jsocrud.insert = function(object, path, value) {
  * @returns {Object|Array|String|Boolean|Number} Value in the object at the specified path
  */
 jsocrud.get = function(object, path, defaultReturnValue) {
-    var parsedPath = _parsePath(this.validatePath(path));
+    var parsedPath = this.parsePath(this.validatePath(path));
     try {
         var i;
         var currentObject = object;
@@ -87,7 +115,7 @@ jsocrud.get = function(object, path, defaultReturnValue) {
  * @returns {Object} Object after setting value
  */
 jsocrud.set = function(object, path, value) {
-    var parsedPath = _parsePath(this.validatePath(path));
+    var parsedPath = this.parsePath(this.validatePath(path));
     try {
         var i;
         var currentObject = object;
@@ -109,7 +137,7 @@ jsocrud.set = function(object, path, value) {
  * @returns {Object} Object after removal
  */
 jsocrud.remove = function(object, path) {
-    var parsedPath = _parsePath(this.validatePath(path));
+    var parsedPath = this.parsePath(this.validatePath(path));
     try {
         var i;
         var currentObject = object;
@@ -124,39 +152,11 @@ jsocrud.remove = function(object, path) {
     }
 };
 
-/**
- * *This function is not included in exports*
- * Parse a validated path into components
- * @param {String} validatedPath Validated path - Example: ["foo"][2].bar
- * @returns {Array} Path components
- * @private
- */
-function _parsePath(validatedPath) {
-    var pathSplitRegex = /(\.\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\])/g;
-    var parsedPath = [];
-    var match;
-    while (match = pathSplitRegex.exec(validatedPath)) {
-        match = match[0];
-        if (match.indexOf('.') === 0) {
-            match = match.substring(1, match.length);
-        }
-        else if (match.indexOf('["') === 0 || match.indexOf('[\'') === 0) {
-            match = match.substring(2, match.length - 2);
-        }
-        else if (match.indexOf('[') === 0) {
-            match = parseInt(match.substring(1, match.length - 1));
-        }
-        else {
-            throw new Error('Malformed path match: "' + match + '".')
-        }
-        parsedPath.push(match);
-    }
-    return parsedPath;
-}
 
 // Exports ---------------------------------------------------------------------
 module.exports = {
     validatePath: jsocrud.validatePath,
+    parsePath: jsocrud.parsePath,
     insert: jsocrud.insert,
     get: jsocrud.get,
     set: jsocrud.set,

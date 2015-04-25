@@ -55,6 +55,53 @@ describe('jsocrud', function() {
             done();
         });
     });
+    describe('parsePath', function() {
+        it('should be able to parse dot notation components', function(done) {
+            var path = '.foo.bar.1';
+            var parsedPath = jsocrud.parsePath(path);
+            assert.equal(3, parsedPath.length);
+            assert.equal('foo', parsedPath[0]);
+            assert.equal('bar', parsedPath[1]);
+            assert.equal('1', parsedPath[2]);
+            done();
+        });
+        it('should be able to parse bracket notation double-quoted components', function(done) {
+            var path = '["foo"]["bar"]["1"]';
+            var parsedPath = jsocrud.parsePath(path);
+            assert.equal(3, parsedPath.length);
+            assert.equal('foo', parsedPath[0]);
+            assert.equal('bar', parsedPath[1]);
+            assert.equal('1', parsedPath[2]);
+            done();
+        });
+        it('should be able to parse bracket notation single-quoted components', function(done) {
+            var path = "['foo']['bar']['1']";
+            var parsedPath = jsocrud.parsePath(path);
+            assert.equal(3, parsedPath.length);
+            assert.equal('foo', parsedPath[0]);
+            assert.equal('bar', parsedPath[1]);
+            assert.equal('1', parsedPath[2]);
+            done();
+        });
+        it('should be able to parse bracket notation index components', function(done) {
+            var path = "[1][2][3]";
+            var parsedPath = jsocrud.parsePath(path);
+            assert.equal(3, parsedPath.length);
+            assert.equal(1, parsedPath[0]);
+            assert.equal(2, parsedPath[1]);
+            assert.equal(3, parsedPath[2]);
+            done();
+        });
+        it('should be able to parse a combination of different notation components', function(done) {
+            var path = "[1].foo['3']";
+            var parsedPath = jsocrud.parsePath(path);
+            assert.equal(3, parsedPath.length);
+            assert.equal(1, parsedPath[0]);
+            assert.equal('foo', parsedPath[1]);
+            assert.equal('3', parsedPath[2]);
+            done();
+        });
+    });
     describe('insert', function() {
         it('should be able to insert string values', function(done) {
             var object = {};
