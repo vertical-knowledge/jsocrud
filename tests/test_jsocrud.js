@@ -1,5 +1,5 @@
 var assert = require('assert');
-var jsocrud = require('..//jsocrud');
+var jsocrud = require('../jsocrud');
 
 describe('jsocrud', function() {
     describe('validatePath', function() {
@@ -48,7 +48,6 @@ describe('jsocrud', function() {
             assert.throws(function() {
                 jsocrud.validatePath('["foo"]=2;console.log("hi");a={};a["foo"]');
             });
-
             assert.throws(function() {
                 jsocrud.validatePath("['foo']=2;console.log('hi');a={};a['foo']");
             });
