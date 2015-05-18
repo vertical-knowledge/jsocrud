@@ -22,10 +22,19 @@ describe('jsocrud', function() {
             assert.throws(function() {jsocrud.validatePath('foo[a]')});
             done();
         });
-        it('should only allow word characters following a dot', function(done) {
+        it('should only allow word characters in dot notation paths', function(done) {
             assert.equal('.foo', jsocrud.validatePath('foo'));
             assert.throws(function() {
                 jsocrud.validatePath('.foo;');
+            });
+            done();
+        });
+        it('should not allow dot notation paths to begin with a number', function(done) {
+            assert.throws(function() {
+                jsocrud.validatePath('.1');
+            });
+            assert.throws(function() {
+                jsocrud.validatePath('.1');
             });
             done();
         });
@@ -33,6 +42,8 @@ describe('jsocrud', function() {
             var path = '["foo-bar;baz+15"]';
             assert.equal(path, jsocrud.validatePath(path));
             path = "['foo-bar;baz+15']";
+            assert.equal(path, jsocrud.validatePath(path));
+            path = "['1foo-bar;baz+15']";
             assert.equal(path, jsocrud.validatePath(path));
             done();
         });
@@ -44,7 +55,7 @@ describe('jsocrud', function() {
             });
             done();
         });
-        it('should not allow malicious paths', function(done) {
+        it('should not allow paths with unescaped quotes', function(done) {
             assert.throws(function() {
                 jsocrud.validatePath('["foo"]=2;console.log("hi");a={};a["foo"]');
             });
@@ -56,12 +67,12 @@ describe('jsocrud', function() {
     });
     describe('parsePath', function() {
         it('should be able to parse dot notation components', function(done) {
-            var path = '.foo.bar.1';
+            var path = '.foo.bar._1';
             var parsedPath = jsocrud.parsePath(path);
             assert.equal(3, parsedPath.length);
             assert.equal('foo', parsedPath[0]);
             assert.equal('bar', parsedPath[1]);
-            assert.equal('1', parsedPath[2]);
+            assert.equal('_1', parsedPath[2]);
             done();
         });
         it('should be able to parse bracket notation double-quoted components', function(done) {
