@@ -1,4 +1,4 @@
-var PATH_VALIDATION_REGEX = /^((\.[_a-zA-Z]\w*)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\]))+$/;
+var PATH_VALIDATION_REGEX = /^((\.[_a-zA-Z$][_a-zA-Z0-9$]*)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\]))+$/;
 
 /**
  * jsocrud module
@@ -33,7 +33,7 @@ jsocrud.validatePath = function(path) {
  * @returns {Array} Path components
  */
 jsocrud.parsePath = function(validatedPath) {
-    var pathSplitRegex = /(\.[_a-zA-Z]\w+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\])/g;
+    var pathSplitRegex = /(\.[[_a-zA-Z$][_a-zA-Z0-9$]+)|(\[(('[^'\\]*(?:\\.[^'\\]*)*')|("[^"\\]*(?:\\.[^"\\]*)*")|(\d+))\])/g;
     var parsedPath = [];
     var match;
     while (match = pathSplitRegex.exec(validatedPath)) {

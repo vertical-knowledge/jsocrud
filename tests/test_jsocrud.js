@@ -22,8 +22,8 @@ describe('jsocrud', function() {
             assert.throws(function() {jsocrud.validatePath('foo[a]')});
             done();
         });
-        it('should only allow word characters in dot notation paths', function(done) {
-            assert.equal('.foo', jsocrud.validatePath('foo'));
+        it('should only allow word characters and dollar signs in dot notation paths', function(done) {
+            assert.equal('.$foo', jsocrud.validatePath('$foo'));
             assert.throws(function() {
                 jsocrud.validatePath('.foo;');
             });
