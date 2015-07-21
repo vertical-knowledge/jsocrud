@@ -57,8 +57,6 @@ Error: There was an error deleting from the given object at path: .foo[1].bar
 #### Installing
 --------------
 ```sh
-git clone git@github.com:vertical-knowledge/jsocrud.git
-cd jsocrud
 npm install
 ```
 
