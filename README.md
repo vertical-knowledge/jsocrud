@@ -6,10 +6,8 @@ View the [wiki](https://github.com/vertical-knowledge/jsocrud/wiki/JSOCRUD.API) 
 ## Usage
 --------------
 
-#### Paths
+#### Paths in JSOCRUD
 --------------
-**What is a path in jsocrud?**
-
 A path is the route in the object you would use to access an element. This can be given in dot or bracket notation.
 
 Examples of acceptable paths and their resulting locations in an object:
