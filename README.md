@@ -34,7 +34,7 @@ undefined
 > jsocrud.insert(object, 'foo', []);
 Error: An entity already exists at path: .foo
 > jsocrud.insert(object, 'foo.baz[1]', 'hello');
-Error: There was an error setting the given value at the path: foo.baz[1]
+Error: There was an error setting the given value at the given path
 
 // - Get (Read) -
 > var object = {'foo': [{'bar': 'baz'}], 'something here': 'hello'};
