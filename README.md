@@ -3,11 +3,29 @@ Perform crud operations within a JavaScript object using a string representation
 
 View the [wiki](https://github.com/vertical-knowledge/jsocrud/wiki/JSOCRUD.API) for function documentation.
 
-#### Usage
+## Usage
 --------------
-Here is an example of how you would use this module interact with a JavaScript Object:
+
+#### Paths
+--------------
+**What is a path in jsocrud?**
+A path is the route in the object you would use to access an element. This can be given in dot or bracket notation.
+
+Examples of acceptable paths and their resulting locations in an object:
+* 'foo' -> object.foo
+* '.foo' -> object.foo
+* "['foo']" -> object.foo
+* '["foo"]' -> object.foo
+* 'foo.bar' -> object.foo.bar
+* 'foo bar.baz' -> object["foo bar"].baz
+* '.foo[1]['bar']' -> object.foo[1].bar
+
+
+#### Code example
+--------------
+Here are some code examples of how you would use this package interact with JavaScript objects:
 ```js
-> var jsocrud = require('jsocrud');
+> var jsocrud = require('jsocrud');  // Require the package to start
 
 ...
 
@@ -22,12 +40,14 @@ Error: An entity already exists at path: .foo
 Error: There was an error setting the given value at the path: foo.baz[1]
 
 // - Get (Read) -
-> var object = {'foo': [{'bar': 'baz'}]};
+> var object = {'foo': [{'bar': 'baz'}], 'something here': 'hello'};
 undefined
+> jsocrud.get(object, 'something here');
+'hello'
 > jsocrud.get(object, 'foo[0].bar');
 'baz'
 > jsocrud.get(object, 'foo[1].bar');
-Error: No entity exists in the given object at path: .foo[1].bar
+Error: No entity exists in the given object at the path
 > jsocrud.get(object, 'foo[1].bar', 'Nothing there');
 'Nothing there'
 
@@ -37,7 +57,7 @@ undefined
 > jsocrud.set(object, 'foo[0].bar', 25);
 { foo: [ { bar: 25 } ] }
 > jsocrud.set(object, 'foo[1].baz', 32);
-Error: There was an error setting the given value at the path: .foo[1].baz
+Error: There was an error setting the given value at the given path
 
 // - Remove (Delete) -
 > var object = {'foo': [{'bar': 'baz'}]};
@@ -45,7 +65,7 @@ undefined
 > jsocrud.remove(object, 'foo[0].bar');
 { foo: [ {} ] }
 > jsocrud.remove(object, 'foo[1].bar');
-Error: There was an error deleting from the given object at path: .foo[1].bar
+Error: There was an error deleting from the given object at the given path
 ```
 
 
