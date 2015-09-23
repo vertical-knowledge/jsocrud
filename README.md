@@ -26,8 +26,6 @@ Here are some code examples of how you would use this package interact with Java
 ```js
 > var jsocrud = require('jsocrud');  // Require the package to start
 
-...
-
 // - Insert (Create) -
 > var object = {};
 undefined
