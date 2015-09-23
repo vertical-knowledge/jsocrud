@@ -2,116 +2,6 @@ var assert = require('assert');
 var jsocrud = require('../jsocrud');
 
 describe('jsocrud', function() {
-    describe('validatePath', function() {
-        it('should throw an error if given an empty path', function(done) {
-            assert.throws(function() {jsocrud.validatePath('')});
-            done();
-        });
-        it('should add a leading "." to path if necessary', function(done) {
-            var path = jsocrud.validatePath('foo');
-            assert.equal('.foo', path);
-            done();
-        });
-        it('should not add a leading "." to path if not necessary', function(done) {
-            var path = jsocrud.validatePath('["foo"]');
-            assert.equal('["foo"]', path);
-            done();
-        });
-        it('should throw an error if given a malformed path', function(done) {
-            assert.throws(function() {jsocrud.validatePath('"foo')});
-            assert.throws(function() {jsocrud.validatePath('foo[a]')});
-            done();
-        });
-        it('should only allow word characters and dollar signs in dot notation paths', function(done) {
-            assert.equal('.$foo', jsocrud.validatePath('$foo'));
-            assert.throws(function() {
-                jsocrud.validatePath('.foo;');
-            });
-            done();
-        });
-        it('should not allow dot notation paths to begin with a number', function(done) {
-            assert.throws(function() {
-                jsocrud.validatePath('.1');
-            });
-            assert.throws(function() {
-                jsocrud.validatePath('.1');
-            });
-            done();
-        });
-        it('should allow any characters (except unescaped respective double or single quotes) in quote notation', function(done) {
-            var path = '["foo-bar;baz+15"]';
-            assert.equal(path, jsocrud.validatePath(path));
-            path = "['foo-bar;baz+15']";
-            assert.equal(path, jsocrud.validatePath(path));
-            path = "['1foo-bar;baz+15']";
-            assert.equal(path, jsocrud.validatePath(path));
-            done();
-        });
-        it('should only allow number characters in index notation', function(done) {
-            var path = '[1][2][3]';
-            assert.equal(path, jsocrud.validatePath(path));
-            assert.throws(function() {
-                jsocrud.validatePath('[abc123]');
-            });
-            done();
-        });
-        it('should not allow paths with unescaped quotes', function(done) {
-            assert.throws(function() {
-                jsocrud.validatePath('["foo"]=2;console.log("hi");a={};a["foo"]');
-            });
-            assert.throws(function() {
-                jsocrud.validatePath("['foo']=2;console.log('hi');a={};a['foo']");
-            });
-            done();
-        });
-    });
-    describe('parsePath', function() {
-        it('should be able to parse dot notation components', function(done) {
-            var path = '.foo.bar._1';
-            var parsedPath = jsocrud.parsePath(path);
-            assert.equal(3, parsedPath.length);
-            assert.equal('foo', parsedPath[0]);
-            assert.equal('bar', parsedPath[1]);
-            assert.equal('_1', parsedPath[2]);
-            done();
-        });
-        it('should be able to parse bracket notation double-quoted components', function(done) {
-            var path = '["foo"]["bar"]["1"]';
-            var parsedPath = jsocrud.parsePath(path);
-            assert.equal(3, parsedPath.length);
-            assert.equal('foo', parsedPath[0]);
-            assert.equal('bar', parsedPath[1]);
-            assert.equal('1', parsedPath[2]);
-            done();
-        });
-        it('should be able to parse bracket notation single-quoted components', function(done) {
-            var path = "['foo']['bar']['1']";
-            var parsedPath = jsocrud.parsePath(path);
-            assert.equal(3, parsedPath.length);
-            assert.equal('foo', parsedPath[0]);
-            assert.equal('bar', parsedPath[1]);
-            assert.equal('1', parsedPath[2]);
-            done();
-        });
-        it('should be able to parse bracket notation index components', function(done) {
-            var path = "[1][2][3]";
-            var parsedPath = jsocrud.parsePath(path);
-            assert.equal(3, parsedPath.length);
-            assert.equal(1, parsedPath[0]);
-            assert.equal(2, parsedPath[1]);
-            assert.equal(3, parsedPath[2]);
-            done();
-        });
-        it('should be able to parse a combination of different notation components', function(done) {
-            var path = "[1].foo['3']";
-            var parsedPath = jsocrud.parsePath(path);
-            assert.equal(3, parsedPath.length);
-            assert.equal(1, parsedPath[0]);
-            assert.equal('foo', parsedPath[1]);
-            assert.equal('3', parsedPath[2]);
-            done();
-        });
-    });
     describe('insert', function() {
         it('should be able to insert string values', function(done) {
             var object = {};
@@ -173,7 +63,7 @@ describe('jsocrud', function() {
             done();
         });
         it('should work with "objects"', function(done) {
-            assert.equal(2, jsocrud.get({'a': 1, 'b': 2}, '["b"]'));
+            assert.equal(2, jsocrud.get({'a': 1, '"boo"': 2}, '"boo"'));
             done();
         });
         it('should work with multiple levels of mixed arrays and objects', function(done) {
