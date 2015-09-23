@@ -44,7 +44,7 @@ undefined
 > jsocrud.get(object, 'foo[0].bar');
 'baz'
 > jsocrud.get(object, 'foo[1].bar');
-Error: No entity exists in the given object at the path
+Error: No entity exists in the given object at the given path
 > jsocrud.get(object, 'foo[1].bar', 'Nothing there');
 'Nothing there'
 
